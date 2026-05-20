@@ -1,0 +1,611 @@
+<!-- FILE: src/main/resources/templates/history.html -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Expense History</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <!-- TAILWIND -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        *{
+            font-family: 'Inter', sans-serif;
+        }
+
+        body{
+
+            background:
+
+                    radial-gradient(circle at top left,
+                    rgba(59,130,246,0.15),
+                    transparent 25%),
+
+                    radial-gradient(circle at top right,
+                    rgba(168,85,247,0.15),
+                    transparent 25%),
+
+                    radial-gradient(circle at bottom left,
+                    rgba(16,185,129,0.12),
+                    transparent 25%),
+
+                    #09090b;
+        }
+
+        .glass{
+
+            background: rgba(255,255,255,0.04);
+
+            backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .sidebar-link{
+
+            transition: 0.3s;
+        }
+
+        .sidebar-link:hover{
+
+            background: rgba(255,255,255,0.08);
+
+            transform: translateX(5px);
+        }
+
+        input::placeholder{
+
+            color: #71717a;
+        }
+
+        option{
+
+            background: #18181b;
+        }
+
+    </style>
+
+</head>
+
+<body class="text-white min-h-screen">
+
+<div class="flex">
+
+    <!-- SIDEBAR -->
+
+    <aside class="w-[260px]
+                  min-h-screen
+                  border-r border-zinc-800
+                  bg-black/20
+                  backdrop-blur-xl
+                  p-6 hidden lg:block">
+
+        <!-- LOGO -->
+
+        <div class="mb-12">
+
+            <h1 class="text-3xl font-black
+                       bg-gradient-to-r
+                       from-blue-400
+                       to-purple-400
+                       bg-clip-text
+                       text-transparent">
+
+                Expense
+
+            </h1>
+
+            <p class="text-zinc-500 text-sm mt-2">
+
+                Smart finance dashboard
+
+            </p>
+
+        </div>
+
+        <!-- NAVIGATION -->
+
+        <div class="space-y-3">
+
+            <!-- DASHBOARD -->
+
+            <a href="/"
+
+               class="sidebar-link
+                      flex items-center gap-3
+                      px-4 py-3
+                      rounded-2xl">
+
+                <span class="text-sm font-medium">
+
+                    Dashboard
+
+                </span>
+
+            </a>
+
+            <!-- HISTORY -->
+
+            <a href="/history"
+
+               class="sidebar-link
+                      flex items-center gap-3
+                      bg-white/10
+                      px-4 py-3
+                      rounded-2xl">
+
+                <span class="text-sm font-medium">
+
+                    Expense History
+
+                </span>
+
+            </a>
+
+            <!-- AI -->
+
+            <a href="/charts"
+
+               class="sidebar-link
+                      flex items-center gap-3
+                      px-4 py-3
+                      rounded-2xl">
+
+                <span class="text-sm font-medium">
+
+                    Expense Intelligence
+
+                </span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="flex-1 p-6 lg:p-10">
+
+        <!-- HEADER -->
+
+        <div class="flex flex-col lg:flex-row
+                    lg:items-center
+                    lg:justify-between
+                    mb-10">
+
+            <div>
+
+                <h1 class="text-5xl font-black mb-3
+                           bg-gradient-to-r
+                           from-white
+                           to-zinc-400
+                           bg-clip-text
+                           text-transparent">
+
+                    Expense History
+
+                </h1>
+
+                <p class="text-zinc-400 text-sm">
+
+                    View and manage all your transactions.
+
+                </p>
+
+            </div>
+
+            <!-- BACK -->
+
+            <a href="/"
+
+               class="mt-6 lg:mt-0
+
+                      bg-gradient-to-r
+                      from-blue-500
+                      to-purple-500
+
+                      px-6 py-3
+
+                      rounded-2xl
+
+                      text-sm font-medium
+
+                      shadow-lg shadow-blue-500/20
+
+                      hover:scale-105
+
+                      transition-all duration-300">
+
+                Back To Dashboard
+
+            </a>
+
+        </div>
+
+        <!-- SEARCH + FILTER -->
+
+        <div class="rounded-3xl p-6 mb-8
+
+                    bg-zinc-900/70
+
+                    border border-zinc-800
+
+                    backdrop-blur-xl">
+
+            <form th:action="@{/history}"
+                  method="get">
+
+                <div class="grid md:grid-cols-4 gap-4">
+
+                    <!-- SEARCH -->
+
+                    <input type="text"
+
+                           name="keyword"
+
+                           th:value="${keyword}"
+
+                           placeholder="Search expenses..."
+
+                           class="bg-black/30
+                                  border border-zinc-700
+                                  p-4
+                                  rounded-2xl
+                                  outline-none
+                                  text-sm
+                                  focus:border-blue-500
+                                  transition-all"/>
+
+                    <!-- CATEGORY -->
+
+                    <select name="category"
+
+                            class="bg-black/30
+                                   border border-zinc-700
+                                   p-4
+                                   rounded-2xl
+                                   outline-none
+                                   text-sm
+                                   focus:border-purple-500
+                                   transition-all">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        <option value="Food"
+                                th:selected="${category == 'Food'}">
+
+                            Food
+
+                        </option>
+
+                        <option value="Travel"
+                                th:selected="${category == 'Travel'}">
+
+                            Travel
+
+                        </option>
+
+                        <option value="Shopping"
+                                th:selected="${category == 'Shopping'}">
+
+                            Shopping
+
+                        </option>
+
+                        <option value="Bills"
+                                th:selected="${category == 'Bills'}">
+
+                            Bills
+
+                        </option>
+
+                        <option value="Entertainment"
+                                th:selected="${category == 'Entertainment'}">
+
+                            Entertainment
+
+                        </option>
+
+                    </select>
+
+                    <!-- FILTER -->
+
+                    <button type="submit"
+
+                            class="bg-gradient-to-r
+                                   from-blue-500
+                                   to-purple-500
+
+                                   text-white
+
+                                   rounded-2xl
+
+                                   text-sm font-medium
+
+                                   shadow-lg
+                                   shadow-blue-500/20
+
+                                   hover:scale-105
+
+                                   transition-all">
+
+                        Apply Filter
+
+                    </button>
+
+                    <!-- SHOW ALL -->
+
+                    <a href="/history"
+
+                       class="glass
+                              rounded-2xl
+                              text-sm
+                              flex items-center
+                              justify-center
+                              hover:bg-white/10
+                              transition-all">
+
+                        Show All
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- TABLE CARD -->
+
+        <div class="rounded-3xl overflow-hidden
+
+                    bg-zinc-900/70
+
+                    border border-zinc-800
+
+                    backdrop-blur-xl">
+
+            <!-- TOP -->
+
+            <div class="p-6 border-b border-zinc-800">
+
+                <h2 class="text-2xl font-semibold mb-2">
+
+                    Recent Transactions
+
+                </h2>
+
+                <p class="text-zinc-500 text-sm">
+
+                    Latest expenses from newest to oldest
+
+                </p>
+
+            </div>
+
+            <!-- TABLE -->
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full">
+
+                    <thead class="bg-white/5">
+
+                    <tr>
+
+                        <th class="p-5 text-left text-sm text-zinc-400">
+
+                            Title
+
+                        </th>
+
+                        <th class="p-5 text-left text-sm text-zinc-400">
+
+                            Amount
+
+                        </th>
+
+                        <th class="p-5 text-left text-sm text-zinc-400">
+
+                            Category
+
+                        </th>
+
+                        <th class="p-5 text-left text-sm text-zinc-400">
+
+                            Date
+
+                        </th>
+
+                        <th class="p-5 text-left text-sm text-zinc-400">
+
+                            Action
+
+                        </th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="expense : ${expenses}"
+
+                        class="border-t border-zinc-800
+                               hover:bg-white/5
+                               transition-all">
+
+                        <!-- TITLE -->
+
+                        <td class="p-5 text-sm font-medium"
+                            th:text="${expense.title}">
+                        </td>
+
+                        <!-- AMOUNT -->
+
+                        <td class="p-5 text-sm font-semibold text-emerald-400">
+
+                            ₹ <span th:text="${expense.amount}"></span>
+
+                        </td>
+
+                        <!-- CATEGORY -->
+
+                        <td class="p-5 text-sm">
+
+                            <span class="px-4 py-2
+                                         rounded-full
+                                         text-xs
+                                         font-medium
+
+                                         bg-gradient-to-r
+                                         from-purple-500/20
+                                         to-pink-500/20
+
+                                         border
+                                         border-purple-500/20"
+
+                                  th:text="${expense.category}">
+                            </span>
+
+                        </td>
+
+                        <!-- DATE -->
+
+                        <td class="p-5 text-sm text-zinc-400"
+                            th:text="${expense.date}">
+                        </td>
+
+                        <!-- DELETE -->
+
+                        <td class="p-5 text-sm">
+
+                            <a th:href="@{/delete/{id}(id=${expense.id})}"
+
+                               class="bg-red-500/10
+                                      border border-red-500/20
+                                      text-red-400
+                                      px-4 py-2
+                                      rounded-xl
+                                      hover:bg-red-500
+                                      hover:text-white
+                                      transition-all duration-300">
+
+                                Delete
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- PAGINATION -->
+
+            <div class="p-6 border-t border-zinc-800
+
+                        flex items-center
+                        justify-center
+                        gap-3 flex-wrap">
+
+                <!-- PREVIOUS -->
+
+                <a th:if="${currentPage > 0}"
+
+                   th:href="@{/history(page=${currentPage - 1},
+                                      keyword=${keyword},
+                                      category=${category})}"
+
+                   class="glass
+                          px-4 py-2
+                          rounded-xl
+                          text-sm
+                          hover:bg-white/10
+                          transition-all">
+
+                    Previous
+
+                </a>
+
+                <!-- PAGE NUMBERS -->
+
+                <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+
+                   th:href="@{/history(page=${i},
+                                      keyword=${keyword},
+                                      category=${category})}"
+
+                   th:text="${i + 1}"
+
+                   th:classappend="${i == currentPage}
+
+                   ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
+
+                   : 'glass text-white hover:bg-white/10'"
+
+                   class="px-4 py-2
+                          rounded-xl
+                          text-sm
+                          transition-all">
+
+                </a>
+
+                <!-- NEXT -->
+
+                <a th:if="${currentPage < totalPages - 1}"
+
+                   th:href="@{/history(page=${currentPage + 1},
+                                      keyword=${keyword},
+                                      category=${category})}"
+
+                   class="glass
+                          px-4 py-2
+                          rounded-xl
+                          text-sm
+                          hover:bg-white/10
+                          transition-all">
+
+                    Next
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>
