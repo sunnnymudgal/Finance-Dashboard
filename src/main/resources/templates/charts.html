@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>Expense Intelligence</title>
+    <title>Finance Analytics</title>
 
     <meta charset="UTF-8">
 
@@ -39,15 +39,20 @@
         body{
 
             background:
+
                     radial-gradient(circle at top left,
-                    rgba(99,102,241,0.15),
+                    rgba(59,130,246,0.18),
                     transparent 25%),
 
-                    radial-gradient(circle at bottom right,
-                    rgba(168,85,247,0.08),
+                    radial-gradient(circle at top right,
+                    rgba(168,85,247,0.15),
                     transparent 25%),
 
-                    #050505;
+                    radial-gradient(circle at bottom left,
+                    rgba(16,185,129,0.12),
+                    transparent 25%),
+
+                    #09090b;
         }
 
         .glass{
@@ -85,19 +90,28 @@
     <!-- SIDEBAR -->
 
     <aside class="w-[260px]
-              min-h-screen
-              border-r border-white/5
-              p-6 hidden lg:block">
+                  min-h-screen
+                  border-r border-zinc-800
+                  bg-black/20
+                  backdrop-blur-xl
+                  p-6 hidden lg:block">
+
+        <!-- LOGO -->
 
         <div class="mb-12">
 
-            <h1 class="text-2xl font-bold mb-2">
+            <h1 class="text-3xl font-black
+                       bg-gradient-to-r
+                       from-blue-400
+                       to-purple-400
+                       bg-clip-text
+                       text-transparent">
 
-                Expense
+                Finance
 
             </h1>
 
-            <p class="text-zinc-500 text-sm">
+            <p class="text-zinc-500 text-sm mt-2">
 
                 Smart finance dashboard
 
@@ -109,52 +123,49 @@
 
         <div class="space-y-3">
 
-            <!-- DASHBOARD -->
-
             <a href="/"
+
                class="sidebar-link
-                  flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl">
+                      flex items-center gap-3
+                      px-4 py-3
+                      rounded-2xl">
 
-            <span class="text-sm font-medium">
+                <span class="text-sm font-medium">
 
-                Dashboard
+                    Dashboard
 
-            </span>
+                </span>
 
             </a>
-
-            <!-- HISTORY -->
 
             <a href="/history"
+
                class="sidebar-link
-                  flex items-center gap-3
-                  px-4 py-3
-                  rounded-2xl">
+                      flex items-center gap-3
+                      px-4 py-3
+                      rounded-2xl">
 
-            <span class="text-sm font-medium">
+                <span class="text-sm font-medium">
 
-                Expense History
+                    Transaction History
 
-            </span>
+                </span>
 
             </a>
 
-            <!-- AI PAGE ACTIVE -->
-
             <a href="/charts"
+
                class="sidebar-link
-                  flex items-center gap-3
-                  bg-white/10
-                  px-4 py-3
-                  rounded-2xl">
+                      flex items-center gap-3
+                      bg-white/10
+                      px-4 py-3
+                      rounded-2xl">
 
-            <span class="text-sm font-medium">
+                <span class="text-sm font-medium">
 
-                Expense Intelligence
+                    Analytics
 
-            </span>
+                </span>
 
             </a>
 
@@ -175,27 +186,44 @@
 
             <div>
 
-                <h1 class="text-3xl font-bold mb-2">
+                <h1 class="text-5xl font-black mb-3
+                           bg-gradient-to-r
+                           from-white
+                           to-zinc-400
+                           bg-clip-text
+                           text-transparent">
 
-                    Expense Intelligence
+                    Finance Analytics
 
                 </h1>
 
                 <p class="text-zinc-500 text-sm">
 
-                    powered analytics based on your financial data.
+                    Visual insights based on your financial activity.
 
                 </p>
 
             </div>
 
             <a href="/"
-               class="glass
-                      px-5 py-3
+
+               class="mt-5 lg:mt-0
+
+                      bg-gradient-to-r
+                      from-blue-500
+                      to-purple-500
+
+                      px-6 py-3
+
                       rounded-2xl
-                      mt-5 lg:mt-0
-                      text-sm
+
+                      text-sm font-medium
+
+                      shadow-lg
+                      shadow-blue-500/20
+
                       hover:scale-105
+
                       transition-all">
 
                 Back To Dashboard
@@ -204,13 +232,11 @@
 
         </div>
 
-        <!-- FILTERS -->
+        <!-- TIME FILTERS -->
 
-        <div class="flex flex-wrap gap-3 mb-8">
+        <div class="flex flex-wrap gap-3 mb-5">
 
-            <!-- DAY -->
-
-            <a href="/charts?filter=day"
+            <a th:href="@{/charts(filter='day',type=${selectedType})}"
 
                th:classappend="${selectedFilter == 'day'}
                ? 'bg-blue-500 text-white'
@@ -223,9 +249,7 @@
 
             </a>
 
-            <!-- WEEK -->
-
-            <a href="/charts?filter=week"
+            <a th:href="@{/charts(filter='week',type=${selectedType})}"
 
                th:classappend="${selectedFilter == 'week'}
                ? 'bg-purple-500 text-white'
@@ -238,9 +262,7 @@
 
             </a>
 
-            <!-- MONTH -->
-
-            <a href="/charts?filter=month"
+            <a th:href="@{/charts(filter='month',type=${selectedType})}"
 
                th:classappend="${selectedFilter == 'month'}
                ? 'bg-emerald-500 text-white'
@@ -253,9 +275,7 @@
 
             </a>
 
-            <!-- YEAR -->
-
-            <a href="/charts?filter=year"
+            <a th:href="@{/charts(filter='year',type=${selectedType})}"
 
                th:classappend="${selectedFilter == 'year'}
                ? 'bg-orange-500 text-white'
@@ -270,12 +290,58 @@
 
         </div>
 
-        <!-- AI INSIGHT -->
+        <!-- TYPE FILTER -->
+
+        <div class="flex gap-3 mb-8">
+
+            <!-- EXPENSE -->
+
+            <a th:href="@{/charts(
+               filter=${selectedFilter},
+               type='Expense')}"
+
+               th:classappend="${selectedType == 'Expense'}
+               ? 'bg-red-500 text-white'
+               : 'glass text-white'"
+
+               class="px-5 py-2
+                      rounded-2xl
+                      text-sm
+                      transition-all">
+
+                Expense Analytics
+
+            </a>
+
+            <!-- INCOME -->
+
+            <a th:href="@{/charts(
+               filter=${selectedFilter},
+               type='Income')}"
+
+               th:classappend="${selectedType == 'Income'}
+               ? 'bg-emerald-500 text-white'
+               : 'glass text-white'"
+
+               class="px-5 py-2
+                      rounded-2xl
+                      text-sm
+                      transition-all">
+
+                Income Analytics
+
+            </a>
+
+        </div>
+
+        <!-- INSIGHT -->
 
         <div class="rounded-3xl p-6 mb-8
+
                     bg-gradient-to-r
                     from-zinc-900
                     to-zinc-800
+
                     border border-zinc-700">
 
             <div class="flex items-center gap-3 mb-4">
@@ -298,6 +364,7 @@
             <p class="text-zinc-300
                       text-sm
                       leading-7"
+
                th:text="${aiMessage}">
             </p>
 
@@ -305,25 +372,75 @@
 
         <!-- TOP CARDS -->
 
-        <div class="grid md:grid-cols-3 gap-5 mb-8">
+        <div class="grid md:grid-cols-4 gap-5 mb-8">
 
-            <!-- TOTAL -->
+            <!-- INCOME -->
 
             <div class="rounded-3xl p-6
+
                         bg-gradient-to-br
-                        from-blue-500/20
-                        to-cyan-500/10
-                        border border-blue-500/20">
+                        from-emerald-500/20
+                        to-green-500/10
 
-                <p class="text-blue-200 text-sm mb-3">
+                        border border-emerald-500/20">
 
-                    Total Spending
+                <p class="text-emerald-200 text-sm mb-3">
+
+                    Total Income
 
                 </p>
 
                 <h2 class="text-2xl font-bold text-white">
 
-                    ₹ <span th:text="${total}"></span>
+                    ₹ <span th:text="${totalIncome}"></span>
+
+                </h2>
+
+            </div>
+
+            <!-- EXPENSE -->
+
+            <div class="rounded-3xl p-6
+
+                        bg-gradient-to-br
+                        from-red-500/20
+                        to-orange-500/10
+
+                        border border-red-500/20">
+
+                <p class="text-red-200 text-sm mb-3">
+
+                    Total Expenses
+
+                </p>
+
+                <h2 class="text-2xl font-bold text-white">
+
+                    ₹ <span th:text="${totalExpense}"></span>
+
+                </h2>
+
+            </div>
+
+            <!-- BALANCE -->
+
+            <div class="rounded-3xl p-6
+
+                        bg-gradient-to-br
+                        from-blue-500/20
+                        to-cyan-500/10
+
+                        border border-blue-500/20">
+
+                <p class="text-blue-200 text-sm mb-3">
+
+                    Balance
+
+                </p>
+
+                <h2 class="text-2xl font-bold text-white">
+
+                    ₹ <span th:text="${balance}"></span>
 
                 </h2>
 
@@ -332,14 +449,16 @@
             <!-- CATEGORY -->
 
             <div class="rounded-3xl p-6
+
                         bg-gradient-to-br
                         from-purple-500/20
                         to-pink-500/10
+
                         border border-purple-500/20">
 
                 <p class="text-purple-200 text-sm mb-3">
 
-                    Highest Category
+                    Top Category
 
                 </p>
 
@@ -348,13 +467,6 @@
                 </h2>
 
             </div>
-
-
-
-
-
-
-
 
         </div>
 
@@ -373,13 +485,14 @@
 
                     <h2 class="text-xl font-semibold mb-2">
 
-                        Expense Categories
+                        <span th:text="${selectedType}">
+                        </span> Categories
 
                     </h2>
 
                     <p class="text-zinc-500 text-sm">
 
-                        AI category distribution analysis
+                        Distribution analysis
 
                     </p>
 
@@ -400,13 +513,14 @@
 
                     <h2 class="text-xl font-semibold mb-2">
 
-                        Spending Analytics
+                        <span th:text="${selectedType}">
+                        </span> Comparison
 
                     </h2>
 
                     <p class="text-zinc-500 text-sm">
 
-                        Expense category comparison
+                        Category comparison
 
                     </p>
 
@@ -429,13 +543,14 @@
 
                 <h2 class="text-xl font-semibold mb-2">
 
-                    Spending Trend
+                    <span th:text="${selectedType}">
+                    </span> Trend
 
                 </h2>
 
                 <p class="text-zinc-500 text-sm">
 
-                    Financial growth visualization
+                    Financial trend visualization
 
                 </p>
 
@@ -449,7 +564,7 @@
 
 </div>
 
-<!-- CHART JS -->
+<!-- CHARTS -->
 
 <script th:inline="javascript">
 
@@ -461,20 +576,23 @@
     const categoryAmounts =
         [[${categoryAmounts}]];
 
-    // MODERN COLORS
+    const selectedType =
+        [[${selectedType}]];
+
+    // COLORS
 
     const chartColors = [
 
-        '#3B82F6', // blue
-        '#8B5CF6', // purple
-        '#10B981', // green
-        '#F59E0B', // orange
-        '#EF4444', // red
-        '#06B6D4', // cyan
-        '#EC4899'  // pink
+        '#3B82F6',
+        '#8B5CF6',
+        '#10B981',
+        '#F59E0B',
+        '#EF4444',
+        '#06B6D4',
+        '#EC4899'
     ];
 
-    // PIE CHART
+    // PIE
 
     new Chart(document.getElementById('pieChart'), {
 
@@ -490,9 +608,9 @@
 
                 backgroundColor: chartColors,
 
-                hoverOffset: 10,
+                borderWidth: 0,
 
-                borderWidth: 0
+                hoverOffset: 10
             }]
         },
 
@@ -510,11 +628,11 @@
 
                         color: 'white',
 
-                        padding: 20,
-
                         usePointStyle: true,
 
-                        pointStyle: 'circle'
+                        pointStyle: 'circle',
+
+                        padding: 20
                     }
                 }
             },
@@ -523,7 +641,7 @@
         }
     });
 
-    // BAR CHART
+    // BAR
 
     new Chart(document.getElementById('barChart'), {
 
@@ -535,7 +653,7 @@
 
             datasets: [{
 
-                label: 'Expenses',
+                label: selectedType,
 
                 data: categoryAmounts,
 
@@ -560,7 +678,8 @@
 
                     grid: {
 
-                        color: 'rgba(255,255,255,0.05)'
+                        color:
+                            'rgba(255,255,255,0.05)'
                     }
                 },
 
@@ -573,7 +692,8 @@
 
                     grid: {
 
-                        color: 'rgba(255,255,255,0.05)'
+                        color:
+                            'rgba(255,255,255,0.05)'
                     }
                 }
             },
@@ -591,7 +711,7 @@
         }
     });
 
-    // LINE CHART
+    // LINE
 
     new Chart(document.getElementById('lineChart'), {
 
@@ -603,7 +723,7 @@
 
             datasets: [{
 
-                label: 'Trend',
+                label: selectedType + ' Trend',
 
                 data: categoryAmounts,
 
@@ -637,7 +757,8 @@
 
                     grid: {
 
-                        color: 'rgba(255,255,255,0.05)'
+                        color:
+                            'rgba(255,255,255,0.05)'
                     }
                 },
 
@@ -650,7 +771,8 @@
 
                     grid: {
 
-                        color: 'rgba(255,255,255,0.05)'
+                        color:
+                            'rgba(255,255,255,0.05)'
                     }
                 }
             },

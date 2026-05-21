@@ -5,7 +5,7 @@
 
 <head>
 
-    <title>Expense Dashboard</title>
+    <title>Finance Dashboard</title>
 
     <meta charset="UTF-8">
 
@@ -119,7 +119,7 @@
                        bg-clip-text
                        text-transparent">
 
-                Expense
+                Finance
 
             </h1>
 
@@ -162,13 +162,13 @@
 
                 <span class="text-sm font-medium">
 
-                    Expense History
+                    Transaction History
 
                 </span>
 
             </a>
 
-            <!-- AI -->
+            <!-- ANALYTICS -->
 
             <a href="/charts"
                class="sidebar-link
@@ -178,7 +178,7 @@
 
                 <span class="text-sm font-medium">
 
-                    Expense Intelligence
+                    Analytics
 
                 </span>
 
@@ -214,14 +214,13 @@
 
                 <p class="text-zinc-400 text-sm">
 
-                    Track, analyze and optimize your finances
-                    with smart AI insights.
+                    Manage your income, expenses and track your financial growth.
 
                 </p>
 
             </div>
 
-            <!-- AI BUTTON -->
+            <!-- ANALYTICS BUTTON -->
 
             <a href="/charts"
 
@@ -244,17 +243,70 @@
 
                       transition-all duration-300">
 
-                Open Expense Intelligence
+                Open Analytics
 
             </a>
+
 
         </div>
 
         <!-- STATS -->
 
-        <div class="grid md:grid-cols-3 gap-5 mb-8">
+        <div class="grid md:grid-cols-4 gap-5 mb-8">
 
-            <!-- YEARLY -->
+            <!-- INCOME -->
+
+            <div class="rounded-3xl p-6
+
+                        bg-gradient-to-br
+                        from-emerald-500/20
+                        to-green-500/10
+
+                        border border-emerald-500/20
+
+                        backdrop-blur-xl">
+
+                <p class="text-emerald-200 text-sm mb-3">
+
+                    Total Income
+
+                </p>
+
+                <h2 class="text-2xl font-bold text-white">
+
+                    ₹ <span th:text="${totalIncome}"></span>
+
+                </h2>
+
+            </div>
+
+            <!-- EXPENSE -->
+
+            <div class="rounded-3xl p-6
+
+                        bg-gradient-to-br
+                        from-red-500/20
+                        to-orange-500/10
+
+                        border border-red-500/20
+
+                        backdrop-blur-xl">
+
+                <p class="text-red-200 text-sm mb-3">
+
+                    Total Expenses
+
+                </p>
+
+                <h2 class="text-2xl font-bold text-white">
+
+                    ₹ <span th:text="${totalExpense}"></span>
+
+                </h2>
+
+            </div>
+
+            <!-- BALANCE -->
 
             <div class="rounded-3xl p-6
 
@@ -264,51 +316,17 @@
 
                         border border-blue-500/20
 
-                        backdrop-blur-xl
-
-                        hover:scale-[1.02]
-
-                        transition-all duration-300">
+                        backdrop-blur-xl">
 
                 <p class="text-blue-200 text-sm mb-3">
 
-                    Yearly Expenses
+                    Current Balance
 
                 </p>
 
                 <h2 class="text-2xl font-bold text-white">
 
-                    ₹ <span th:text="${yearlyExpenses}"></span>
-
-                </h2>
-
-            </div>
-
-            <!-- MONTHLY -->
-
-            <div class="rounded-3xl p-6
-
-                        bg-gradient-to-br
-                        from-purple-500/20
-                        to-pink-500/10
-
-                        border border-purple-500/20
-
-                        backdrop-blur-xl
-
-                        hover:scale-[1.02]
-
-                        transition-all duration-300">
-
-                <p class="text-purple-200 text-sm mb-3">
-
-                    Monthly Spending
-
-                </p>
-
-                <h2 class="text-2xl font-bold text-white">
-
-                    ₹ <span th:text="${monthlyExpenses}"></span>
+                    ₹ <span th:text="${balance}"></span>
 
                 </h2>
 
@@ -319,18 +337,14 @@
             <div class="rounded-3xl p-6
 
                         bg-gradient-to-br
-                        from-emerald-500/20
-                        to-green-500/10
+                        from-purple-500/20
+                        to-pink-500/10
 
-                        border border-emerald-500/20
+                        border border-purple-500/20
 
-                        backdrop-blur-xl
+                        backdrop-blur-xl">
 
-                        hover:scale-[1.02]
-
-                        transition-all duration-300">
-
-                <p class="text-emerald-200 text-sm mb-3">
+                <p class="text-purple-200 text-sm mb-3">
 
                     Transactions
 
@@ -345,7 +359,7 @@
 
         </div>
 
-        <!-- AI INSIGHT -->
+        <!-- INSIGHT -->
 
         <div class="rounded-3xl p-6 mb-8
 
@@ -394,13 +408,13 @@
 
                 <h2 class="text-2xl font-semibold mb-2">
 
-                    Add Expense
+                    Add Transaction
 
                 </h2>
 
                 <p class="text-zinc-500 text-sm">
 
-                    Save and manage your daily transactions.
+                    Save and manage your financial transactions.
 
                 </p>
 
@@ -412,7 +426,7 @@
                   th:object="${expense}"
                   method="post">
 
-                <div class="grid md:grid-cols-3 gap-4">
+                <div class="grid md:grid-cols-4 gap-4">
 
                     <!-- TITLE -->
 
@@ -420,18 +434,18 @@
 
                            th:field="*{title}"
 
-                           placeholder="Expense title"
+                           placeholder="Transaction title"
 
                            required
 
                            class="bg-black/30
-                                  border border-zinc-700
-                                  p-4
-                                  rounded-2xl
-                                  outline-none
-                                  text-sm
-                                  focus:border-blue-500
-                                  transition-all"/>
+                      border border-zinc-700
+                      p-4
+                      rounded-2xl
+                      outline-none
+                      text-sm
+                      focus:border-blue-500
+                      transition-all"/>
 
                     <!-- AMOUNT -->
 
@@ -446,51 +460,64 @@
                            required
 
                            class="bg-black/30
-                                  border border-zinc-700
-                                  p-4
-                                  rounded-2xl
-                                  outline-none
-                                  text-sm
-                                  focus:border-purple-500
-                                  transition-all"/>
+                      border border-zinc-700
+                      p-4
+                      rounded-2xl
+                      outline-none
+                      text-sm
+                      focus:border-purple-500
+                      transition-all"/>
 
-                    <!-- CATEGORY -->
+                    <!-- TYPE -->
 
-                    <select th:field="*{category}"
+                    <select id="typeSelect"
+
+                            th:field="*{type}"
 
                             required
 
                             class="bg-black/30
-                                   border border-zinc-700
-                                   p-4
-                                   rounded-2xl
-                                   outline-none
-                                   text-sm
-                                   focus:border-emerald-500
-                                   transition-all">
+                       border border-zinc-700
+                       p-4
+                       rounded-2xl
+                       outline-none
+                       text-sm
+                       focus:border-green-500
+                       transition-all">
+
+                        <option value="">
+                            Select Type
+                        </option>
+
+                        <option value="Income">
+                            Income
+                        </option>
+
+                        <option value="Expense">
+                            Expense
+                        </option>
+
+                    </select>
+
+                    <!-- CATEGORY -->
+
+                    <select id="categorySelect"
+
+                            th:field="*{category}"
+
+                            required
+
+                            class="bg-black/30
+                       border border-zinc-700
+                       p-4
+                       rounded-2xl
+                       outline-none
+                       text-sm
+                       focus:border-emerald-500
+                       transition-all">
 
                         <option value="">
                             Select Category
-                        </option>
-
-                        <option value="Food">
-                            Food
-                        </option>
-
-                        <option value="Travel">
-                            Travel
-                        </option>
-
-                        <option value="Shopping">
-                            Shopping
-                        </option>
-
-                        <option value="Bills">
-                            Bills
-                        </option>
-
-                        <option value="Entertainment">
-                            Entertainment
                         </option>
 
                     </select>
@@ -501,26 +528,26 @@
 
                 <button class="mt-5
 
-                               bg-gradient-to-r
-                               from-blue-500
-                               to-purple-500
+                   bg-gradient-to-r
+                   from-blue-500
+                   to-purple-500
 
-                               text-white
+                   text-white
 
-                               px-7 py-3
+                   px-7 py-3
 
-                               rounded-2xl
+                   rounded-2xl
 
-                               text-sm font-semibold
+                   text-sm font-semibold
 
-                               shadow-lg
-                               shadow-blue-500/20
+                   shadow-lg
+                   shadow-blue-500/20
 
-                               hover:scale-105
+                   hover:scale-105
 
-                               transition-all duration-300">
+                   transition-all duration-300">
 
-                    Add Expense
+                    Add Transaction
 
                 </button>
 
@@ -531,7 +558,74 @@
     </main>
 
 </div>
+<script>
 
+    const typeSelect =
+        document.getElementById(
+            "typeSelect"
+        );
+
+    const categorySelect =
+        document.getElementById(
+            "categorySelect"
+        );
+
+    const categories = {
+
+        Income: [
+
+            "Salary",
+            "Freelance",
+            "Business",
+            "Investment"
+        ],
+
+        Expense: [
+
+            "Food",
+            "Travel",
+            "Shopping",
+            "Bills",
+            "Entertainment"
+        ]
+    };
+
+    typeSelect.addEventListener(
+        "change",
+
+        function () {
+
+            const selectedType =
+                this.value;
+
+            categorySelect.innerHTML =
+                '<option value="">Select Category</option>';
+
+            if (categories[selectedType]) {
+
+                categories[selectedType]
+                    .forEach(category => {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        category;
+
+                    option.textContent =
+                        category;
+
+                    categorySelect.appendChild(
+                        option
+                    );
+                });
+            }
+        }
+    );
+
+</script>
 </body>
 
 </html>

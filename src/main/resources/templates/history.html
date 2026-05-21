@@ -5,18 +5,14 @@
 
 <head>
 
-    <title>Expense History</title>
+    <title>Transaction History</title>
 
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <!-- TAILWIND -->
-
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- FONT -->
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -52,6 +48,23 @@
 
                     #09090b;
         }
+
+       input[type="date"]::-webkit-calendar-picker-indicator {
+
+    filter: brightness(0)
+            invert(1);
+
+    opacity: 0.8;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+
+    opacity: 1;
+}
 
         .glass{
 
@@ -112,7 +125,7 @@
                        bg-clip-text
                        text-transparent">
 
-                Expense
+                Finance
 
             </h1>
 
@@ -127,8 +140,6 @@
         <!-- NAVIGATION -->
 
         <div class="space-y-3">
-
-            <!-- DASHBOARD -->
 
             <a href="/"
 
@@ -145,8 +156,6 @@
 
             </a>
 
-            <!-- HISTORY -->
-
             <a href="/history"
 
                class="sidebar-link
@@ -157,13 +166,11 @@
 
                 <span class="text-sm font-medium">
 
-                    Expense History
+                    Transaction History
 
                 </span>
 
             </a>
-
-            <!-- AI -->
 
             <a href="/charts"
 
@@ -174,7 +181,7 @@
 
                 <span class="text-sm font-medium">
 
-                    Expense Intelligence
+                    Analytics
 
                 </span>
 
@@ -204,19 +211,17 @@
                            bg-clip-text
                            text-transparent">
 
-                    Expense History
+                    Transaction History
 
                 </h1>
 
                 <p class="text-zinc-400 text-sm">
 
-                    View and manage all your transactions.
+                    Track all your income and expense transactions.
 
                 </p>
 
             </div>
-
-            <!-- BACK -->
 
             <a href="/"
 
@@ -244,7 +249,7 @@
 
         </div>
 
-        <!-- SEARCH + FILTER -->
+        <!-- FILTERS -->
 
         <div class="rounded-3xl p-6 mb-8
 
@@ -255,9 +260,13 @@
                     backdrop-blur-xl">
 
             <form th:action="@{/history}"
-                  method="get">
+                  method="get"
 
-                <div class="grid md:grid-cols-4 gap-4">
+                  id="filterForm">
+
+                <!-- TOP FILTERS -->
+
+                <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-4 mb-5">
 
                     <!-- SEARCH -->
 
@@ -267,33 +276,69 @@
 
                            th:value="${keyword}"
 
-                           placeholder="Search expenses..."
+                           placeholder="Search transactions..."
+
+                           onkeyup="autoSubmit()"
 
                            class="bg-black/30
-                                  border border-zinc-700
-                                  p-4
-                                  rounded-2xl
-                                  outline-none
-                                  text-sm
-                                  focus:border-blue-500
-                                  transition-all"/>
+                      border border-zinc-700
+                      px-4 py-3
+                      rounded-2xl
+                      outline-none
+                      text-sm
+                      text-white
+                      placeholder:text-zinc-500
+                      focus:border-blue-500
+                      focus:ring-2
+                      focus:ring-blue-500/20
+                      transition-all"/>
 
                     <!-- CATEGORY -->
 
                     <select name="category"
 
+                            onchange="autoSubmit()"
+
                             class="bg-black/30
-                                   border border-zinc-700
-                                   p-4
-                                   rounded-2xl
-                                   outline-none
-                                   text-sm
-                                   focus:border-purple-500
-                                   transition-all">
+                       border border-zinc-700
+                       px-4 py-3
+                       rounded-2xl
+                       outline-none
+                       text-sm
+                       text-white
+                       focus:border-purple-500
+                       focus:ring-2
+                       focus:ring-purple-500/20
+                       transition-all">
 
                         <option value="">
                             All Categories
                         </option>
+
+                        <!-- INCOME -->
+
+                        <option value="Salary"
+                                th:selected="${category == 'Salary'}">
+
+                            Salary
+
+                        </option>
+
+                        <option value="Freelance"
+                                th:selected="${category == 'Freelance'}">
+
+                            Freelance
+
+                        </option>
+
+                        <option value="Business"
+                                th:selected="${category == 'Business'}">
+
+                            Business
+
+                        </option>
+
+                        <!-- EXPENSE -->
 
                         <option value="Food"
                                 th:selected="${category == 'Food'}">
@@ -332,44 +377,183 @@
 
                     </select>
 
-                    <!-- FILTER -->
+                    <!-- TYPE -->
 
-                    <button type="submit"
+                    <select name="type"
 
-                            class="bg-gradient-to-r
-                                   from-blue-500
-                                   to-purple-500
+                            onchange="autoSubmit()"
 
-                                   text-white
+                            class="bg-black/30
+                       border border-zinc-700
+                       px-4 py-3
+                       rounded-2xl
+                       outline-none
+                       text-sm
+                       text-white
+                       focus:border-green-500
+                       focus:ring-2
+                       focus:ring-green-500/20
+                       transition-all">
 
-                                   rounded-2xl
+                        <option value="">
+                            All Types
+                        </option>
 
-                                   text-sm font-medium
+                        <option value="Income"
+                                th:selected="${type == 'Income'}">
 
-                                   shadow-lg
-                                   shadow-blue-500/20
+                            Income
 
-                                   hover:scale-105
+                        </option>
 
-                                   transition-all">
+                        <option value="Expense"
+                                th:selected="${type == 'Expense'}">
 
-                        Apply Filter
+                            Expense
 
-                    </button>
+                        </option>
 
-                    <!-- SHOW ALL -->
+                    </select>
+
+                    <!-- CLEAR -->
 
                     <a href="/history"
 
                        class="glass
-                              rounded-2xl
-                              text-sm
-                              flex items-center
-                              justify-center
-                              hover:bg-white/10
-                              transition-all">
+                  px-4 py-3
+                  rounded-2xl
+                  text-sm
+                  flex items-center
+                  justify-center
+                  hover:bg-white/10
+                  transition-all">
 
-                        Show All
+                        Clear Filters
+
+                    </a>
+
+                </div>
+
+                <!-- DATE + PDF -->
+
+                <div class="grid lg:grid-cols-3 gap-4">
+
+                    <!-- START DATE -->
+
+                    <div>
+
+                        <label class="block
+                           text-sm
+                           text-cyan-400
+                           mb-2
+                           font-medium">
+
+                            Start Date
+
+                        </label>
+
+                        <input type="date"
+
+                               name="startDate"
+
+                               th:value="${startDate}"
+
+                               onchange="autoSubmit()"
+
+                               class="w-full
+                          bg-black/30
+                          border border-zinc-700
+                          px-4 py-3
+                          rounded-2xl
+                          outline-none
+                          text-sm
+                          text-white
+                          focus:border-cyan-500
+                          focus:ring-2
+                          focus:ring-cyan-500/20
+                          transition-all"/>
+
+                    </div>
+
+                    <!-- END DATE -->
+
+                    <div>
+
+                        <label class="block
+                           text-sm
+                           text-pink-400
+                           mb-2
+                           font-medium">
+
+                            End Date
+
+                        </label>
+
+                        <input type="date"
+
+                               name="endDate"
+
+                               th:value="${endDate}"
+
+                               onchange="autoSubmit()"
+
+                               class="w-full
+                          bg-black/30
+                          border border-zinc-700
+                          px-4 py-3
+                          rounded-2xl
+                          outline-none
+                          text-sm
+                          text-white
+                          focus:border-pink-500
+                          focus:ring-2
+                          focus:ring-pink-500/20
+                          transition-all"/>
+
+                    </div>
+
+                    <!-- PDF -->
+
+                    <a th:href="@{/download-report(
+
+            keyword=${keyword},
+
+            category=${category},
+
+            type=${type},
+
+            startDate=${startDate},
+
+            endDate=${endDate}
+
+        )}"
+
+                       class="bg-gradient-to-r
+                  from-emerald-500
+                  to-green-500
+
+                  h-fit
+                  mt-auto
+
+                  text-white
+
+                  px-5 py-3
+
+                  rounded-2xl
+
+                  text-sm font-medium
+
+                  shadow-lg
+                  shadow-emerald-500/20
+
+                  hover:scale-[1.02]
+
+                  flex items-center
+                  justify-center
+
+                  transition-all duration-300">
+
+                        Download PDF Report
 
                     </a>
 
@@ -379,7 +563,7 @@
 
         </div>
 
-        <!-- TABLE CARD -->
+        <!-- TABLE -->
 
         <div class="rounded-3xl overflow-hidden
 
@@ -389,7 +573,7 @@
 
                     backdrop-blur-xl">
 
-            <!-- TOP -->
+            <!-- HEADER -->
 
             <div class="p-6 border-b border-zinc-800">
 
@@ -401,7 +585,7 @@
 
                 <p class="text-zinc-500 text-sm">
 
-                    Latest expenses from newest to oldest
+                    Newest transactions appear first.
 
                 </p>
 
@@ -418,33 +602,27 @@
                     <tr>
 
                         <th class="p-5 text-left text-sm text-zinc-400">
-
                             Title
-
                         </th>
 
                         <th class="p-5 text-left text-sm text-zinc-400">
+                            Type
+                        </th>
 
+                        <th class="p-5 text-left text-sm text-zinc-400">
                             Amount
-
                         </th>
 
                         <th class="p-5 text-left text-sm text-zinc-400">
-
                             Category
-
                         </th>
 
                         <th class="p-5 text-left text-sm text-zinc-400">
-
                             Date
-
                         </th>
 
                         <th class="p-5 text-left text-sm text-zinc-400">
-
                             Action
-
                         </th>
 
                     </tr>
@@ -465,11 +643,61 @@
                             th:text="${expense.title}">
                         </td>
 
+                        <!-- TYPE -->
+
+                        <td class="p-5 text-sm">
+
+                            <span th:if="${expense.type == 'Income'}"
+
+                                  class="px-4 py-2
+                                         rounded-full
+                                         text-xs
+                                         font-semibold
+
+                                         bg-emerald-500/20
+                                         text-emerald-300
+                                         border border-emerald-500/20">
+
+                                Income
+
+                            </span>
+
+                            <span th:if="${expense.type == 'Expense'}"
+
+                                  class="px-4 py-2
+                                         rounded-full
+                                         text-xs
+                                         font-semibold
+
+                                         bg-red-500/20
+                                         text-red-300
+                                         border border-red-500/20">
+
+                                Expense
+
+                            </span>
+
+                        </td>
+
                         <!-- AMOUNT -->
 
-                        <td class="p-5 text-sm font-semibold text-emerald-400">
+                        <td class="p-5 text-sm font-bold">
 
-                            ₹ <span th:text="${expense.amount}"></span>
+                            <span th:if="${expense.type == 'Income'}"
+
+                                  class="text-emerald-400">
+
+                                + ₹ <span th:text="${expense.amount}"></span>
+
+                            </span>
+
+                            <span th:if="${expense.type == 'Expense'}"
+
+                                  class="text-red-400">
+
+                                - ₹ <span th:text="${expense.amount}"></span>
+
+                            </span>
 
                         </td>
 
@@ -541,9 +769,11 @@
 
                 <a th:if="${currentPage > 0}"
 
-                   th:href="@{/history(page=${currentPage - 1},
-                                      keyword=${keyword},
-                                      category=${category})}"
+                   th:href="@{/history(
+                   page=${currentPage - 1},
+                   keyword=${keyword},
+                   category=${category},
+                   type=${type})}"
 
                    class="glass
                           px-4 py-2
@@ -556,13 +786,15 @@
 
                 </a>
 
-                <!-- PAGE NUMBERS -->
+                <!-- PAGES -->
 
                 <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
 
-                   th:href="@{/history(page=${i},
-                                      keyword=${keyword},
-                                      category=${category})}"
+                   th:href="@{/history(
+                   page=${i},
+                   keyword=${keyword},
+                   category=${category},
+                   type=${type})}"
 
                    th:text="${i + 1}"
 
@@ -583,9 +815,11 @@
 
                 <a th:if="${currentPage < totalPages - 1}"
 
-                   th:href="@{/history(page=${currentPage + 1},
-                                      keyword=${keyword},
-                                      category=${category})}"
+                   th:href="@{/history(
+                   page=${currentPage + 1},
+                   keyword=${keyword},
+                   category=${category},
+                   type=${type})}"
 
                    class="glass
                           px-4 py-2
@@ -605,7 +839,24 @@
     </main>
 
 </div>
+<script>
 
+    let timeout;
+
+    function autoSubmit() {
+
+        clearTimeout(timeout);
+
+        timeout = setTimeout(() => {
+
+            document
+                .getElementById("filterForm")
+                .submit();
+
+        }, 400);
+    }
+
+</script>
 </body>
 
 </html>
