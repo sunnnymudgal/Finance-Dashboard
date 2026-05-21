@@ -39,10 +39,71 @@ public class HomeController {
     // DASHBOARD
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(
+
+            @RequestParam(required = false)
+            String filter,
+
+            Model model) {
+
+        // ALL TRANSACTIONS
 
         List<Expense> expenses =
                 expenseRepository.findAll();
+
+        // FILTER LOGIC
+
+        LocalDate now =
+                LocalDate.now();
+
+        if (filter != null &&
+                !filter.isEmpty()) {
+
+            expenses = expenses.stream()
+
+                    .filter(expense -> {
+
+                        LocalDate date =
+                                expense.getDate();
+
+                        if (date == null)
+                            return false;
+
+                        switch (filter) {
+
+                            case "day":
+
+                                return date.equals(now);
+
+                            case "month":
+
+                                return
+
+                                        date.getMonth()
+                                                .equals(
+                                                        now.getMonth())
+
+                                                &&
+
+                                                date.getYear()
+                                                        == now.getYear();
+
+                            case "year":
+
+                                return
+
+                                        date.getYear()
+                                                == now.getYear();
+
+                            default:
+
+                                return true;
+                        }
+
+                    })
+
+                    .toList();
+        }
 
         // TOTAL INCOME
 
@@ -227,6 +288,10 @@ public class HomeController {
         model.addAttribute(
                 "aiInsight",
                 aiInsight);
+
+        model.addAttribute(
+                "selectedFilter",
+                filter);
 
         return "index";
     }

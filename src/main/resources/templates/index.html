@@ -249,7 +249,131 @@
 
 
         </div>
+        <!-- DASHBOARD FILTERS -->
 
+        <div class="flex flex-wrap gap-3 mb-10">
+
+            <!-- TODAY -->
+
+            <a th:href="@{/(filter='day')}"
+
+               th:classappend="${selectedFilter == 'day'}
+
+       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-105'
+
+       : 'glass text-zinc-300 hover:text-white hover:bg-white/10'"
+
+               class="px-6 py-3
+
+              rounded-2xl
+
+              text-sm font-medium
+
+              border border-white/5
+
+              transition-all duration-300
+
+              hover:scale-105
+
+              transform-gpu
+
+              will-change-transform">
+
+                Today
+
+            </a>
+
+            <!-- MONTH -->
+
+            <a th:href="@{/(filter='month')}"
+
+               th:classappend="${selectedFilter == 'month'}
+
+       ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/30 scale-105'
+
+       : 'glass text-zinc-300 hover:text-white hover:bg-white/10'"
+
+               class="px-6 py-3
+
+              rounded-2xl
+
+              text-sm font-medium
+
+              border border-white/5
+
+              transition-all duration-300
+
+              hover:scale-105
+
+              transform-gpu
+
+              will-change-transform">
+
+                Month
+
+            </a>
+
+            <!-- YEAR -->
+
+            <a th:href="@{/(filter='year')}"
+
+               th:classappend="${selectedFilter == 'year'}
+
+       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30 scale-105'
+
+       : 'glass text-zinc-300 hover:text-white hover:bg-white/10'"
+
+               class="px-6 py-3
+
+              rounded-2xl
+
+              text-sm font-medium
+
+              border border-white/5
+
+              transition-all duration-300
+
+              hover:scale-105
+
+              transform-gpu
+
+              will-change-transform">
+
+                Year
+
+            </a>
+
+            <!-- ALL TIME -->
+
+            <a th:href="@{/}"
+
+               th:classappend="${selectedFilter == null}
+
+       ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30 scale-105'
+
+       : 'glass text-zinc-300 hover:text-white hover:bg-white/10'"
+
+               class="px-6 py-3
+
+              rounded-2xl
+
+              text-sm font-medium
+
+              border border-white/5
+
+              transition-all duration-300
+
+              hover:scale-105
+
+              transform-gpu
+
+              will-change-transform">
+
+                All Time
+
+            </a>
+
+        </div>
         <!-- STATS -->
 
         <div class="grid md:grid-cols-4 gap-5 mb-8">
