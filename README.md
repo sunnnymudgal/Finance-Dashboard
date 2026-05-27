@@ -75,44 +75,6 @@ finance-dashboard/
 
 ---
 
-## Getting Started
-
-### Clone the Repository
-
-```bash
-git clone https://github.com/your-username/finance-dashboard.git
-```
-
-### Navigate to the Project Directory
-
-```bash
-cd finance-dashboard
-```
-
-### Configure Database
-
-Update the `application.properties` file with your MySQL configuration.
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/finance_dashboard
-spring.datasource.username=root
-spring.datasource.password=your_password
-```
-
-### Run the Application
-
-```bash
-mvn spring-boot:run
-```
-
-The application will start on:
-
-```bash
-http://localhost:8080
-```
-
----
-
 ## AWS EC2 Deployment
 
 The project is deployed on an AWS EC2 instance to simulate a real-world production environment.
@@ -154,7 +116,6 @@ Implemented security features include:
 - Docker containerization
 - CI/CD pipeline integration
 - Microservices architecture
-- AI-powered financial insights
 
 ---
 
